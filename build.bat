@@ -1,7 +1,7 @@
 echo Downloading portaudio
 if not exist portaudio (
+	mkdir portaudio
 	curl --output portaudio.tgz -LJO http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz
-	if not exist portaudio mkdir portaudio
 	tar -C portaudio -xf portaudio.tgz --strip 1
 	del portaudio.tgz
 )
