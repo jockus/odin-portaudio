@@ -103,7 +103,7 @@ StreamCallbackResult :: enum i32 {
     Abort = 2,
 };
 
-VersionInfo :: struct #packed {
+VersionInfo :: struct {
     versionMajor : i32,
     versionMinor : i32,
     versionSubMinor : i32,
@@ -111,7 +111,7 @@ VersionInfo :: struct #packed {
     versionText : cstring,
 };
 
-HostApiInfo :: struct #packed {
+HostApiInfo :: struct {
     structVersion : i32,
     type : HostApiTypeId,
     name : cstring,
@@ -120,13 +120,13 @@ HostApiInfo :: struct #packed {
     defaultOutputDevice : DeviceIndex,
 };
 
-HostErrorInfo :: struct #packed {
+HostErrorInfo :: struct {
     hostApiType : HostApiTypeId,
     errorCode : c.long,
     errorText : cstring,
 };
 
-DeviceInfo :: struct #packed {
+DeviceInfo :: struct {
     structVersion : i32,
     name : cstring,
     hostApi : HostApiIndex,
@@ -139,7 +139,7 @@ DeviceInfo :: struct #packed {
     defaultSampleRate : f64,
 };
 
-StreamParameters :: struct #packed {
+StreamParameters :: struct {
     device : DeviceIndex,
     channelCount : i32,
     sampleFormat : SampleFormat,
@@ -147,13 +147,13 @@ StreamParameters :: struct #packed {
     hostApiSpecificStreamInfo : rawptr,
 };
 
-StreamCallbackTimeInfo :: struct #packed {
+StreamCallbackTimeInfo :: struct {
     inputBufferAdcTime : Time,
     currentTime : Time,
     outputBufferDacTime : Time,
 };
 
-StreamInfo :: struct #packed {
+StreamInfo :: struct {
     structVersion : i32,
     inputLatency : Time,
     outputLatency : Time,
