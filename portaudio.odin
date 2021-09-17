@@ -2,40 +2,40 @@ package portaudio
 
 import "core:c"
 
-when ODIN_OS == "windows" do foreign import portaudio {"portaudio/portaudio_static_x64.lib", "system:advapi32.lib"};
+when ODIN_OS == "windows" do foreign import portaudio {"portaudio/portaudio_x64.lib", "system:advapi32.lib"}
 
-NoDevice :: -1;
-UseHostApiSpecificDeviceSpecification :: -2;
-Float32 :: 1;
-Int32 :: 2;
-Int24 :: 4;
-Int16 :: 8;
-Int8 :: 16;
-UInt8 :: 32;
-CustomFormat :: 65536;
-NonInterleaved :: 2147483648;
-FormatIsSupported :: 0;
-FramesPerBufferUnspecified :: 0;
-NoFlag :: 0;
-ClipOff :: 1;
-DitherOff :: 2;
-NeverDropInput :: 4;
-PrimeOutputBuffersUsingStreamCallback :: 8;
-PlatformSpecificFlags :: 4294901760;
-InputUnderflow :: 1;
-InputOverflow :: 2;
-OutputUnderflow :: 4;
-OutputOverflow :: 8;
-PrimingOutput :: 16;
+NoDevice :: -1
+UseHostApiSpecificDeviceSpecification :: -2
+Float32 :: 1
+Int32 :: 2
+Int24 :: 4
+Int16 :: 8
+Int8 :: 16
+UInt8 :: 32
+CustomFormat :: 65536
+NonInterleaved :: 2147483648
+FormatIsSupported :: 0
+FramesPerBufferUnspecified :: 0
+NoFlag :: 0
+ClipOff :: 1
+DitherOff :: 2
+NeverDropInput :: 4
+PrimeOutputBuffersUsingStreamCallback :: 8
+PlatformSpecificFlags :: 4294901760
+InputUnderflow :: 1
+InputOverflow :: 2
+OutputUnderflow :: 4
+OutputOverflow :: 8
+PrimingOutput :: 16
 
-Error :: i32;
-DeviceIndex :: i32;
-HostApiIndex :: i32;
-Time :: f64;
-SampleFormat :: c.ulong;
-Stream :: distinct rawptr;
-StreamFlags :: c.ulong;
-StreamCallbackFlags :: c.ulong;
+Error :: i32
+DeviceIndex :: i32
+HostApiIndex :: i32
+Time :: f64
+SampleFormat :: c.ulong
+Stream :: distinct rawptr
+StreamFlags :: c.ulong
+StreamCallbackFlags :: c.ulong
 
 StreamCallback :: #type proc "c" (
     input : rawptr,
@@ -43,9 +43,9 @@ StreamCallback :: #type proc "c" (
     frameCount : c.ulong,
     timeInfo : ^StreamCallbackTimeInfo,
     statusFlags : StreamCallbackFlags,
-    userData : rawptr
-) -> int;
-StreamFinishedCallback :: #type proc "c" (userData : rawptr);
+    userData : rawptr,
+) -> int
+StreamFinishedCallback :: #type proc "c" (userData : rawptr)
 
 ErrorCode :: enum i32 {
     NoError = 0,
@@ -78,7 +78,7 @@ ErrorCode :: enum i32 {
     CanNotWriteToAnInputOnlyStream,
     IncomtibleStreamHostApi,
     BadBufferPtr,
-};
+}
 
 HostApiTypeId :: enum i32 {
     InDevelopment = 0,
@@ -95,38 +95,38 @@ HostApiTypeId :: enum i32 {
     JACK = 12,
     WASAPI = 13,
     AudioScienceHPI = 14,
-};
+}
 
 StreamCallbackResult :: enum i32 {
     Continue = 0,
     Complete = 1,
     Abort = 2,
-};
+}
 
-VersionInfo :: struct #packed {
+VersionInfo :: struct {
     versionMajor : i32,
     versionMinor : i32,
     versionSubMinor : i32,
     versionControlRevision : cstring,
     versionText : cstring,
-};
+}
 
-HostApiInfo :: struct #packed {
+HostApiInfo :: struct {
     structVersion : i32,
     type : HostApiTypeId,
     name : cstring,
     deviceCount : i32,
     defaultInputDevice : DeviceIndex,
     defaultOutputDevice : DeviceIndex,
-};
+}
 
-HostErrorInfo :: struct #packed {
+HostErrorInfo :: struct {
     hostApiType : HostApiTypeId,
     errorCode : c.long,
     errorText : cstring,
-};
+}
 
-DeviceInfo :: struct #packed {
+DeviceInfo :: struct {
     structVersion : i32,
     name : cstring,
     hostApi : HostApiIndex,
@@ -137,70 +137,70 @@ DeviceInfo :: struct #packed {
     defaultHighInputLatency : Time,
     defaultHighOutputLatency : Time,
     defaultSampleRate : f64,
-};
+}
 
-StreamParameters :: struct #packed {
+StreamParameters :: struct {
     device : DeviceIndex,
     channelCount : i32,
     sampleFormat : SampleFormat,
     suggestedLatency : Time,
     hostApiSpecificStreamInfo : rawptr,
-};
+}
 
-StreamCallbackTimeInfo :: struct #packed {
+StreamCallbackTimeInfo :: struct {
     inputBufferAdcTime : Time,
     currentTime : Time,
     outputBufferDacTime : Time,
-};
+}
 
-StreamInfo :: struct #packed {
+StreamInfo :: struct {
     structVersion : i32,
     inputLatency : Time,
     outputLatency : Time,
     sampleRate : f64,
-};
+}
 
 @(default_calling_convention="c", link_prefix="Pa_")
 foreign portaudio {
 
-    GetVersion :: proc() -> i32 ---;
-    GetVersionText :: proc() -> cstring ---;
-    GetVersionInfo :: proc() -> ^VersionInfo ---;
+    GetVersion :: proc() -> i32 ---
+    GetVersionText :: proc() -> cstring ---
+    GetVersionInfo :: proc() -> ^VersionInfo ---
 
-    GetErrorText :: proc(errorCode : Error) -> cstring ---;
+    GetErrorText :: proc(errorCode : Error) -> cstring ---
 
-    Initialize :: proc() -> Error ---;
+    Initialize :: proc() -> Error ---
 
-    Terminate :: proc() -> Error ---;
+    Terminate :: proc() -> Error ---
 
-    GetHostApiCount :: proc() -> HostApiIndex ---;
+    GetHostApiCount :: proc() -> HostApiIndex ---
 
-    GetDefaultHostApi :: proc() -> HostApiIndex ---;
+    GetDefaultHostApi :: proc() -> HostApiIndex ---
 
-    GetHostApiInfo :: proc(hostApi : HostApiIndex) -> ^HostApiInfo ---;
+    GetHostApiInfo :: proc(hostApi : HostApiIndex) -> ^HostApiInfo ---
 
-    HostApiTypeIdToHostApiIndex :: proc(type : HostApiTypeId) -> HostApiIndex ---;
+    HostApiTypeIdToHostApiIndex :: proc(type : HostApiTypeId) -> HostApiIndex ---
 
     HostApiDeviceIndexToDeviceIndex :: proc(
         hostApi : HostApiIndex,
-        hostApiDeviceIndex : i32
-    ) -> DeviceIndex ---;
+        hostApiDeviceIndex : i32,
+    ) -> DeviceIndex ---
 
-    GetLastHostErrorInfo :: proc() -> ^HostErrorInfo ---;
+    GetLastHostErrorInfo :: proc() -> ^HostErrorInfo ---
 
-    GetDeviceCount :: proc() -> DeviceIndex ---;
+    GetDeviceCount :: proc() -> DeviceIndex ---
 
-    GetDefaultInputDevice :: proc() -> DeviceIndex ---;
+    GetDefaultInputDevice :: proc() -> DeviceIndex ---
 
-    GetDefaultOutputDevice :: proc() -> DeviceIndex ---;
+    GetDefaultOutputDevice :: proc() -> DeviceIndex ---
 
-    GetDeviceInfo :: proc(device : DeviceIndex) -> ^DeviceInfo ---;
+    GetDeviceInfo :: proc(device : DeviceIndex) -> ^DeviceInfo ---
 
     IsFormatSupported :: proc(
         inputParameters : ^StreamParameters,
         outputParameters : ^StreamParameters,
-        sampleRate : f64
-    ) -> Error ---;
+        sampleRate : f64,
+    ) -> Error ---
 
     OpenStream :: proc(
         stream : ^^Stream,
@@ -210,8 +210,8 @@ foreign portaudio {
         framesPerBuffer : c.ulong,
         streamFlags : StreamFlags,
         streamCallback : StreamCallback,
-        userData : rawptr
-    ) -> Error ---;
+        userData : rawptr,
+    ) -> Error ---
 
     OpenDefaultStream :: proc(
         stream : ^^Stream,
@@ -221,50 +221,50 @@ foreign portaudio {
         sampleRate : f64,
         framesPerBuffer : c.ulong,
         streamCallback : StreamCallback,
-        userData : rawptr
-    ) -> Error ---;
+        userData : rawptr,
+    ) -> Error ---
 
-    CloseStream :: proc(stream : ^Stream) -> Error ---;
+    CloseStream :: proc(stream : ^Stream) -> Error ---
 
     SetStreamFinishedCallback :: proc(
         stream : ^Stream,
-        streamFinishedCallback : ^StreamFinishedCallback
-    ) -> Error ---;
+        streamFinishedCallback : ^StreamFinishedCallback,
+    ) -> Error ---
 
-    StartStream :: proc(stream : ^Stream) -> Error ---;
+    StartStream :: proc(stream : ^Stream) -> Error ---
 
-    StopStream :: proc(stream : ^Stream) -> Error ---;
+    StopStream :: proc(stream : ^Stream) -> Error ---
 
-    AbortStream :: proc(stream : ^Stream) -> Error ---;
+    AbortStream :: proc(stream : ^Stream) -> Error ---
 
-    IsStreamStopped :: proc(stream : ^Stream) -> Error ---;
+    IsStreamStopped :: proc(stream : ^Stream) -> Error ---
 
-    IsStreamActive :: proc(stream : ^Stream) -> Error ---;
+    IsStreamActive :: proc(stream : ^Stream) -> Error ---
 
-    GetStreamInfo :: proc(stream : ^Stream) -> ^StreamInfo ---;
+    GetStreamInfo :: proc(stream : ^Stream) -> ^StreamInfo ---
 
-    GetStreamTime :: proc(stream : ^Stream) -> Time ---;
+    GetStreamTime :: proc(stream : ^Stream) -> Time ---
 
-    GetStreamCpuLoad :: proc(stream : ^Stream) -> f64 ---;
+    GetStreamCpuLoad :: proc(stream : ^Stream) -> f64 ---
 
     ReadStream :: proc(
         stream : ^Stream,
         buffer : rawptr,
-        frames : c.ulong
-    ) -> Error ---;
+        frames : c.ulong,
+    ) -> Error ---
 
     WriteStream :: proc(
         stream : ^Stream,
         buffer : rawptr,
-        frames : c.ulong
-    ) -> Error ---;
+        frames : c.ulong,
+    ) -> Error ---
 
-    GetStreamReadAvailable :: proc(stream : ^Stream) -> c.long ---;
+    GetStreamReadAvailable :: proc(stream : ^Stream) -> c.long ---
 
-    GetStreamWriteAvailable :: proc(stream : ^Stream) -> c.long ---;
+    GetStreamWriteAvailable :: proc(stream : ^Stream) -> c.long ---
 
-    GetSampleSize :: proc(format : SampleFormat) -> Error ---;
+    GetSampleSize :: proc(format : SampleFormat) -> Error ---
 
-    Sleep :: proc(msec : c.long) ---;
+    Sleep :: proc(msec : c.long) ---
 
 }
