@@ -2,7 +2,7 @@ package portaudio
 
 import "core:c"
 
-when ODIN_OS == "windows" do foreign import portaudio {"portaudio/portaudio_x64.lib", "system:advapi32.lib"}
+when ODIN_OS == .Windows do foreign import portaudio {"portaudio/portaudio_x64.lib", "system:advapi32.lib"}
 
 NoDevice :: -1
 UseHostApiSpecificDeviceSpecification :: -2
