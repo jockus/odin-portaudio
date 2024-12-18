@@ -4,6 +4,9 @@ import "core:c"
 
 when ODIN_OS == .Windows do foreign import portaudio {"portaudio/portaudio_x64.lib", "system:advapi32.lib"}
 
+// Install with command: brew install portaudio 
+when ODIN_OS == .Darwin do foreign import portaudio "system:portaudio"
+
 NoDevice :: -1
 UseHostApiSpecificDeviceSpecification :: -2
 Float32 :: 1
